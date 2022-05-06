@@ -1,0 +1,306 @@
+@font-face {
+    font-family: "Roboto";
+    src: url("./assets/fonts/Roboto/Roboto-Regular.ttf");
+}
+
+@font-face {
+    font-family: "Roboto-Medium";
+    src: url("./assets/fonts/Roboto/Roboto-Medium.ttf");
+}
+
+@font-face {
+    font-family: "Roboto-Light";
+    src: url("./assets/fonts/Roboto/Roboto-Light.ttf");
+}
+
+@font-face {
+    font-family: "Roboto-Black";
+    src: url("./assets/fonts/Roboto/Roboto-Black.ttf");
+}
+
+@font-face {
+    font-family: "Roboto-Bold";
+    src: url("./assets/fonts/Roboto/Roboto-Bold.ttf");
+}
+
+/* app general styles */
+
+#root {
+    min-width: 900px;
+}
+
+.App {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.body {
+    min-width: 1400px;
+}
+
+/* components */
+
+.App-header {
+    background-color: #1D6AA0;
+    color: white;
+    width: 100%;
+}
+
+.footer {
+    margin-top: 150px;
+    bottom: 10px;
+}
+
+.login {
+    min-height: 100vh;
+    bottom: 0px;
+    display: flex;
+    flex-direction: column;
+    background-color: #1D6AA0;
+    color: rgb(255, 255, 255);
+    bottom: 0;
+}
+
+.login-card {
+    background-color: rgb(255, 255, 255);
+    color: black;
+}
+
+.login-sub-btn {
+    font-family: Roboto-Medium;
+}
+
+.card {
+    border-radius: 20px !important;
+}
+
+.header-logo {
+    border-right: solid 1px;
+    left: 0;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.side-bar {
+    top: 0;
+    bottom: 0;
+    border-right: solid 1px #D8D8D8;
+    min-height: 100vh;
+}
+
+button {
+    font-family: Roboto-Medium;
+    background-color: #0965DF;
+}
+
+.label-select {
+    right: 0;
+}
+
+.list-rol {
+    padding-left: 0px !important;
+}
+
+.settings-c {
+    border-bottom: solid 1px #D8D8D8;
+}
+
+.footer-component {
+    bottom: 0;
+    width: 100%;
+    font-family: Roboto;
+    color: rgba(0, 0, 0, 0.87);
+    font-size: 12px;
+    background-color: #FAFAFA;
+    height: 50px;
+    font-weight: lighter;
+}
+
+.full-h {
+    min-height: 100vh;
+}
+
+@media (max-width: 1400px) {
+    .fixed-top {
+        display: none !important;
+    }
+}
+.no-format{
+    color: #000000DE;
+    text-decoration: none !important;
+}
+.no-format :hover{
+    color: #000000DE !important;
+    text-decoration: none !important;
+}
+/* mui components */
+
+.MuiTypography-body2 {
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.MuiDialogTitle-root {
+    font-weight: bold !important;
+}
+
+.MuiChip-colorSecondary {
+    color: white !important;
+    background-color: rgba(0, 0, 0, 0.26) !important;
+}
+
+.MuiSelect-select {
+    display: flex !important;
+}
+
+.no-border .css-4wkuxf-MuiInputBase-root-MuiFilledInput-root:before {
+    display: none;
+}
+
+.MuiTableCell-root {
+    align-items: flex-start;
+}
+
+.head .MuiTypography-h5 {
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.head .MuiTypography-body1 {
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.head .MuiTypography-h6 {
+    font-weight: bold;
+}
+
+#Select-blue {
+    color: #0965DF;
+    background: transparent;
+}
+
+.MuiTablePagination-actions {
+    visibility: hidden;
+}
+
+.MuiTablePagination-toolbar {
+    display: flex !important;
+    align-items: baseline !important;
+    overflow: hidden;
+    /* align-items: baseline; */
+}
+
+.chat-cell {
+    border-bottom: transparent !important;
+}
+
+/* text */
+
+pre {
+    text-align: left;
+  }
+
+h2 {
+    font-family: Roboto;
+    font-weight: 50px !important;
+}
+
+h5 {
+    font-family: Roboto;
+    color: #FFFFFF;
+    font-family: Roboto;
+    font-size: 24px;
+    line-height: 32px;
+}
+
+h6 {
+    font-family: Roboto-Medium;
+}
+
+.profile-title {
+    font-family: Roboto-Light;
+    color: #FFFFFF;
+    font-size: 16px;
+    letter-spacing: 0.75px;
+    line-height: 24px;
+}
+
+.profile-sub {
+    color: #FFFFFF;
+    font-family: Roboto-Light;
+    font-size: 14px;
+    letter-spacing: 0.85px;
+    line-height: 20px;
+}
+
+.sub-text {
+    opacity: .8;
+    text-transform: initial !important;
+}
+
+.sub-text-form {
+    font-family: Roboto;
+    color: rgba(0, 0, 0, 0.6);
+    height: 40px;
+    width: 193px;
+    color: rgba(0, 0, 0, 0.6);
+    font-family: Roboto;
+    font-size: 12px;
+    letter-spacing: 0.4px;
+    line-height: 20px;
+}
+
+.hd-txt {
+    font-family: Roboto-Medium;
+    font-size: 20px;
+}
+
+.side-title {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-family: Roboto;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.text-login {
+    /* margin-left: 20%; */
+    padding-left: 20%;
+    padding-right: 20%;
+    color: rgba(0, 0, 0, 0.87);
+    font-family: Roboto-Bold;
+}
+
+.basic-text {
+    font-family: Roboto;
+}
+
+/* assets */
+
+.list {
+    padding-left: 10% !important;
+}
+
+.divider {
+    bottom: 0px;
+    border-right: solid 1px #D8D8D8;
+}
+
+.divider-bottom {
+    border-bottom: solid 1px #D8D8D8;
+}
+
+.img-logo {
+    width: 150px;
+}
+
+.h-all {
+    bottom: 0;
+    min-height: 100vh;
+}
+
+.loading {
+    height: 100px;
+}
+
+.shadox {
+    box-shadow: black 3px;
+}
