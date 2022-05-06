@@ -66,8 +66,8 @@ function Session() {
                     const s3DomainUrl = ( new URL( s3LinkVideo ) )
                     const s3Domain = s3DomainUrl.hostname
                     const cloudFrontUrl = s3LinkVideo.replace( s3Domain, cloudFrontDomain )
-                    // Victor H. Olvera modifications end here.
                     setLinkVideo(cloudFrontUrl)// Original: setLinkVideo(object[i].path)
+                    // Victor H. Olvera modifications end here.
                     fileNames={ ...fileNames, Video: object[i].name }
                     validateVideo = true
                 }
@@ -76,7 +76,13 @@ function Session() {
                     secondaryVideoPath =object[i].path
                 }
                 if (object[i].name.indexOf('audio_only') !== -1) {
-                    setLinkAudio(object[i].path)
+                    // Victor H. Olvera modifications start here.
+                    const s3LinkAudio = object[i].path
+                    const s3DomainUrl = ( new URL( s3LinkAudio ) )
+                    const s3Domain = s3DomainUrl.hostname
+                    const cloudFrontUrl = s3LinkAudio.replace( s3Domain, cloudFrontDomain )
+                    setLinkAudio(cloudFrontUrl)// Original: setLinkAudio(object[i].path)
+                    // Victor H. Olvera modifications end here.
                     fileNames={ ...fileNames, Audio: object[i].name }
                     validateAudio = true
                 }
@@ -87,7 +93,12 @@ function Session() {
             if (!validateVideo) {
                 if (secondaryVideo.length !== 0) {
                     fileNames={ ...fileNames, Video: secondaryVideo }
-                    setLinkVideo(secondaryVideoPath)
+                    // Victor H. Olvera modifications start here.
+                    const s3DomainUrl = ( new URL( secondaryVideoPath ) )
+                    const s3Domain = s3DomainUrl.hostname
+                    const cloudFrontUrl = secondaryVideoPath.replace( s3Domain, cloudFrontDomain )
+                    setLinkVideo(cloudFrontUrl)// Original: setLinkVideo(secondaryVideoPath)
+                    // Victor H. Olvera modifications end here.
                 }
                 else {
                     setAlert({ ...alert, Video: "No se ha podido reproducir el archivo de video" })
