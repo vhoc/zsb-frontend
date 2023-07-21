@@ -49,13 +49,17 @@ export default function TableUsers(props) {
 
     }, [props])
 
+    const plainText = (str) => {
+        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+      } 
+
     const onSearch = (input) => {
         setSearch(input.target.value)
         const dataTable = []
         props.data.map((e) => {
             let email = e.email === null ? '' : e.email
             let userName = e.userName === null ? '' : e.userName
-            if (email.indexOf(input.target.value) !== -1 || userName.indexOf(input.target.value) !== -1) {
+            if (plainText(email).indexOf(plainText(input.target.value)) !== -1 || plainText(userName).indexOf(plainText(input.target.value)) !== -1) {
                 return dataTable.push(createData(e.id, e.userName, e.email, e.groups, e.status))
             }
             else {

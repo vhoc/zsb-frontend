@@ -58,9 +58,16 @@ function Session() {
             let secondaryVideo = ''
             let secondaryVideoPath = ''
             let fileNames = {Audio:'', Video:'', Chat:''}
+            let cloudFrontDomain = process.env.REACT_APP_CLOUDFRONT_DOMAIN
             for (let i = 0; i < object.length; i++) {
                 if (object[i].name.indexOf('shared_screen_with_speaker_view') !== -1) {
-                    setLinkVideo(object[i].path)
+                    // Victor H. Olvera modifications start here.
+                    const s3LinkVideo = object[i].path
+                    const s3DomainUrl = ( new URL( s3LinkVideo ) )
+                    const s3Domain = s3DomainUrl.hostname
+                    const cloudFrontUrl = s3LinkVideo.replace( s3Domain, cloudFrontDomain )
+                    setLinkVideo(cloudFrontUrl)// Original: setLinkVideo(object[i].path)
+                    // Victor H. Olvera modifications end here.
                     fileNames={ ...fileNames, Video: object[i].name }
                     validateVideo = true
                 }
@@ -69,7 +76,13 @@ function Session() {
                     secondaryVideoPath =object[i].path
                 }
                 if (object[i].name.indexOf('audio_only') !== -1) {
-                    setLinkAudio(object[i].path)
+                    // Victor H. Olvera modifications start here.
+                    const s3LinkAudio = object[i].path
+                    const s3DomainUrl = ( new URL( s3LinkAudio ) )
+                    const s3Domain = s3DomainUrl.hostname
+                    const cloudFrontUrl = s3LinkAudio.replace( s3Domain, cloudFrontDomain )
+                    setLinkAudio(cloudFrontUrl)// Original: setLinkAudio(object[i].path)
+                    // Victor H. Olvera modifications end here.
                     fileNames={ ...fileNames, Audio: object[i].name }
                     validateAudio = true
                 }
