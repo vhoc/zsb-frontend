@@ -11,7 +11,9 @@ import { Pagination } from '@mui/material';
 import { Typography, TextField, InputAdornment } from '@mui/material';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import { getUsers } from '../../services/admin';
-
+import Switch from '@mui/material/Switch';
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
+import Button from '@mui/material/Button';
 
 function createData(id, name, email) {
     return {
@@ -29,6 +31,7 @@ function EnhancedTableHead() {
             <TableRow>
                 <TableCell>Usuario</TableCell>
                 <TableCell >Correo Electrónico</TableCell>
+                <TableCell >Respaldar</TableCell>
             </TableRow>
         </TableHead>
     );
@@ -42,6 +45,21 @@ export default function EnhancedTable() {
     const [totalRecords, setTotalRecords] = useState(0)
     const [usersTotal, setUsersTotal] = useState(0)
     const [search, setSearch] = useState('')
+
+    // TODO: Get this default value from the backend, it should come from there
+    const [backupAll, setBackupAll] = useState(false)
+
+    const [confirmBackupAllDialog, setConfirmBackupAllDialog] = useState(false)
+
+    const handleChangeBackupAllSwitch = () => {
+        // if false, show confirm popup, on OK toggle backupAll state to true
+        if ( backupAll === false ) {
+            setConfirmBackupAllDialog(true)            
+            return
+        }
+        setBackupAll(false)
+        // if true, just toggle backupAll state to false
+    }
 
     const handleChangePage = (event, newPage) => {
         getUsers(rowsPerPage, newPage, search).then(res => {
@@ -128,30 +146,44 @@ export default function EnhancedTable() {
 
     return (
         <div className="p-0 pl-4">
-            <div className="d-flex pb-4 pt-5 pl-2 justify-content-between align-items-center">
-                <Typography variant="body1" >
-                    Usuarios respaldados ({usersTotal})
+            <div className="d-flex flex-column pb-4 pt-5 pl-2 justify-content-between align-items-start">
+                <Typography variant="body1 pb-3" >
+                    Selecciona los usuarios que deseas respaldar en Dropbox
                 </Typography>
-                <div>
-                    <Paper>
-                        <TextField
-                            className="no-border"
-                            size="small"
-                            fullWidth
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <SearchRoundedIcon />
-                                    </InputAdornment>
-                                ),
-                            }}
-                            onChange={onSearch}
-                            value={search}
-                            hiddenLabel
-                            id="filled-hidden-label-normal"
-                            variant="filled"
-                            placeholder="Buscar usuario" />
-                    </Paper>
+                <div className='d-flex justify-content-between align-items-center w-100'>
+                    <TextField
+                        className=""
+                        size="small"
+                        //fullWidth
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <SearchRoundedIcon />
+                                </InputAdornment>
+                            ),
+                        }}
+                        onChange={onSearch}
+                        value={search}
+                        hiddenLabel
+                        id="filled-hidden-label-normal"
+                        variant="filled"
+                        placeholder="Buscar usuario"
+                    />
+                    <Typography variant="body2" color={'#000000'} >
+                        {/* dynamic */}
+                        4 usuarios seleccionados
+                    </Typography>
+
+                    <div className='d-flex align-items-center'>
+                        <Typography variant="body2" color={'#000000'} >
+                            Respaldar todos los usuarios
+                        </Typography>
+                        <Switch
+                            checked={backupAll}
+                            onChange={handleChangeBackupAllSwitch}
+                        />
+                    </div>
+
                 </div>
 
             </div>
@@ -173,6 +205,16 @@ export default function EnhancedTable() {
                                             {row.name}
                                         </TableCell>
                                         <TableCell >{row.email}</TableCell>
+                                        {/* dynamic */}
+                                        <TableCell width={70}>
+                                            {/* WAITING FOR BACKEND: */}
+                                            <Switch
+                                                onChange={() => {
+                                                    // change current row (user) iteration value to its opposite.
+                                                    setBackupAll(false)
+                                                }}
+                                            />
+                                        </TableCell>
                                     </TableRow>
                                 );
                             })}
@@ -180,7 +222,7 @@ export default function EnhancedTable() {
                     </Table>
                 </TableContainer>
                 <div className="d-flex justify-content-between align-items-center p-3">
-                    <div className="d-flex ">
+                    <div className="d-flex">
                         <TablePagination
                             className='d-flex align-items-center'
                             rowsPerPageOptions={[5, 10]}
@@ -201,6 +243,34 @@ export default function EnhancedTable() {
                     </div>
                 </div>
             </Paper>
+            <Dialog
+                open={confirmBackupAllDialog}
+                onClose={() => setConfirmBackupAllDialog(false)}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                {"Respaldar todos los usuarios"}
+                </DialogTitle>
+                <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                    ¿Estás seguro de que quieres respaldar las sesiones de todos los usuarios de la cuenta de Zoom?
+                </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                <Button onClick={() => setConfirmBackupAllDialog(false)}>CANCELAR</Button>
+                <Button
+                    onClick={() => {
+                        setBackupAll(true)
+                        setConfirmBackupAllDialog(false)
+                    }}
+                    autoFocus
+                >
+                    CONFIRMAR
+                </Button>
+                </DialogActions>
+            </Dialog>
+            
         </div>
     );
 }
