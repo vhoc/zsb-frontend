@@ -151,7 +151,7 @@ export default function EditAdmin(props) {
                     <ListItemIcon>
                         <EditIcon fontSize="small" />
                     </ListItemIcon>
-                    <Typography variant="inherit">Editar Usuario </Typography>
+                    <Typography variant="inherit">Editar Rol </Typography>
                 </MenuItem>
             }
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
@@ -180,6 +180,7 @@ export default function EditAdmin(props) {
                             onChange={formik.handleChange}
                             error={formik.touched.name && Boolean(formik.errors.name)}
                             helperText={formik.touched.name && formik.errors.name}
+                            disabled
                         />
                         <TextField
                             autoFocus
@@ -193,6 +194,7 @@ export default function EditAdmin(props) {
                             onChange={formik.handleChange}
                             error={formik.touched.email && Boolean(formik.errors.email)}
                             helperText={formik.touched.email && formik.errors.email}
+                            disabled
                         />
                         <FormControl
                             margin="dense"

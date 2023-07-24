@@ -32,6 +32,7 @@ export default function TableUsers(props) {
 
     const [rows, setRows] = useState([createData("", "No hay resultados que mostrar", "", "", "")])
     const [search, setSearch] = useState('')
+    // console.log(rows)
 
     useEffect(() => {
         if (props.data !== undefined) {

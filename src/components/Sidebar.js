@@ -11,6 +11,7 @@ import PeopleIcon from '@mui/icons-material/People';
 import BookSharpIcon from '@mui/icons-material/BookSharp';
 import { ListItemButton } from '@mui/material';
 import { getItem } from '../utility/localStorageControl';
+import EngineeringIcon from '@mui/icons-material/Engineering';
 
 const drawerWidth = "20%";
 
@@ -66,6 +67,7 @@ export default function Sidebar() {
                         OPCIONES DE RESPALDO
                     </div>
                     <List>
+                        {/* CONFIGURACION */}
                         <ListItemButton selected={location.pathname === "/settings"} className="list" onClick={() => history.push("/settings")} >
                             <ListItemIcon> <SettingsIcon /></ListItemIcon>
                             <ListItemText
@@ -73,13 +75,23 @@ export default function Sidebar() {
                                 primary={<Typography type="body2">Configuración</Typography>}
                             />
                         </ListItemButton>
+                        {/* ADMINISTRADORES */}
                         <ListItemButton className="list" selected={location.pathname === "/admin-panel"} onClick={() => history.push("/admin-panel")} >
-                            <ListItemIcon> <PeopleIcon /></ListItemIcon>
+                            <ListItemIcon> <EngineeringIcon /></ListItemIcon>
                             <ListItemText
                                 disableTypography
                                 primary={<Typography type="body2">Administradores</Typography>}
                             />
                         </ListItemButton>
+                        {/* USUARIOS */}
+                        <ListItemButton className="list" selected={location.pathname === "/users"} onClick={() => history.push("/users")} >
+                            <ListItemIcon> <PeopleIcon /></ListItemIcon>
+                            <ListItemText
+                                disableTypography
+                                primary={<Typography type="body2">Usuarios</Typography>}
+                            />
+                        </ListItemButton>
+                        {/* REGISTRO DE ACTIVIDAD */}
                         <ListItemButton selected={location.pathname === "/logs"} className="list" onClick={() => history.push("/logs")} >
                             <ListItemIcon> <BookSharpIcon /></ListItemIcon>
                             <ListItemText

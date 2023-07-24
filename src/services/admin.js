@@ -88,6 +88,30 @@ const getAdmins = async (rowspp, page, userRequest) => {
     };
     return await sendRequest(route, request);
 }
+// These users are the ones selected from all the zoom users who will have access.
+const getUsersWithAccess = () => {
+    return [
+        {
+            id: 1,
+            userName: 'Juan Magaña Ornelas',
+            email: 'jmagana@empresa1.com',
+            status: 1,
+        },
+        {
+            id: 2,
+            userName: 'Maria Fernanda Gomez Espino',
+            email: 'mgomez@empresa1.com',
+            status: 1,
+        },
+        {
+            id: 3,
+            userName: 'Maria Fernanda Gomez Espino',
+            email: 'mgomez@empresa1.com',
+            status: 0,
+        }
+    ]
+}
+
 const getUsers = async (rowspp, page, userRequest) => {
     let route = "zoomusers/paginated";
     if (rowspp !== undefined && page !== undefined) {
@@ -266,6 +290,7 @@ export {
     deleteRole,
     getUsers,
     getAdmins,
+    getUsersWithAccess,
     getAdminById,
     getUsersbyRol,
     getUsersOutRol,
