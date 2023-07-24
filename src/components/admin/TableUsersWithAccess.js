@@ -202,11 +202,16 @@ export default function TableUsersWithAccess(props) {
                     variant="filled"
                     placeholder="Buscar usuario o sesión"
                 />
-                <Button variant="contained" color={'error'}
-                    startIcon={<DeleteIcon />} onClick={() => alert('PENDING DELETION FUNCTIONALITY. WAITING FOR BACKEND.')}
-                    >
-                    ELIMINAR USUARIOS
-                </Button>
+                {
+                    props.selected.length >= 1 ?
+                        <Button variant="contained" color={'error'}
+                            startIcon={<DeleteIcon />} onClick={() => alert('PENDING DELETION FUNCTIONALITY. WAITING FOR BACKEND.')}
+                            >
+                            ELIMINAR USUARIOS
+                        </Button>
+                    :
+                        null
+                }
             </div>
             <Paper variant="outlined" sx={{ width: '100%' }}>
                 <TableContainer style={{ maxHeight: 700 }}>
