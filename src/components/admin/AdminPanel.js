@@ -21,7 +21,7 @@ function AdminPanel(props) {
         if (props.title === 'Roles') {
             getRoles().then((res) => {
                 if (res.success !== false) {
-                    // console.log(res.data)
+                    console.log(res.data)
                     setRoles(res.data)
                     // DUMMY DATA
                     // setRoles([
