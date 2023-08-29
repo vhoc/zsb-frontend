@@ -36,7 +36,15 @@ function Rol(props) {
         <ListItem key={props.name} className='list-rol col-12'>
             <Alert open={alert} onCancel={cancel} onConfirm={confirm} btnCancel="Cancelar" btnConfirm="Eliminar" text={`Estas seguro que deseas eliminar el rol "${props.name}"?`} />
             <ListItemText primary={props.name} secondary={props.users} />
-            {props.name === 'General' ? '' :
+            {/* {props.name === 'General' ? '' :
+                <div className="d-flex justify-content-between align-items-center">
+                    <IconButton onClick={() => setAlert(true)} aria-label="delete" color="primary">
+                        <DeleteOutlineIcon color="disabled" />
+                    </IconButton>
+                    <EditRol variant='edit' id={props.id} name={props.name} />
+                </div>
+            } */}
+            {props.name === 'SuperAdmin' ? '' :
                 <div className="d-flex justify-content-between align-items-center">
                     <IconButton onClick={() => setAlert(true)} aria-label="delete" color="primary">
                         <DeleteOutlineIcon color="disabled" />
