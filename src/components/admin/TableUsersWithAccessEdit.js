@@ -12,7 +12,7 @@ import TextField from '@mui/material/TextField';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import InputAdornment from '@mui/material/InputAdornment';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { IconButton } from '@mui/material';
+import { IconButton, Radio } from '@mui/material';
 import CancelSharpIcon from '@mui/icons-material/CancelSharp';
 
 
@@ -63,7 +63,8 @@ function EnhancedTableHead(props) {
                 <TableCell>Usuario</TableCell>
                 <TableCell >Correo Electrónico</TableCell>
                 <TableCell align="right">
-                    {props.type === 'delete' ?
+                    {''}
+                    {/* {props.type === 'delete' ?
                         <>
                             Remover
                             <IconButton aria-label="delete" disabled color="primary">
@@ -88,7 +89,7 @@ function EnhancedTableHead(props) {
                                 }}
                             />
                         </>
-                    }
+                    } */}
                 </TableCell>
             </TableRow>
         </TableHead>
@@ -113,7 +114,7 @@ export default function TableUsersWithAccessEdit(props) {
     const rowsPerPage = 10000
 
     const [search, setSearch] = useState('')
-    console.log(props)
+    const [selectUser, setSelectUser] = useState(0)
 
     useEffect(() => {
         if (!props.open) {
@@ -168,7 +169,7 @@ export default function TableUsersWithAccessEdit(props) {
         if (event.target.checked) {
             const newSelecteds = rows.map((n) => n.id);
             props.setSelected(newSelecteds);
-            
+
             return;
         }
         props.setSelected([]);
@@ -194,8 +195,8 @@ export default function TableUsersWithAccessEdit(props) {
         props.setSelected(newSelected);
     };
 
-    const isSelected = (name) => props.selected.indexOf(name) !== -1;
-    
+    // const isSelected = (name) => props.selected.indexOf(name) !== -1;
+
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
@@ -215,7 +216,7 @@ export default function TableUsersWithAccessEdit(props) {
                     ),
                     endAdornment:
                         (
-                            <IconButton onClick={()=>onSearch({target:{value:''}})} aria-label="delete" color="primary">
+                            <IconButton onClick={() => onSearch({ target: { value: '' } })} aria-label="delete" color="primary">
                                 <CancelSharpIcon color="disabled" />
                             </IconButton>
                         ),
@@ -231,10 +232,10 @@ export default function TableUsersWithAccessEdit(props) {
                         aria-labelledby="Usuarios"
                     >
                         <EnhancedTableHead
-                            numSelected={ props.selected ? props.selected.length : 0}
+                            numSelected={props.selected ? props.selected.length : 0}
                             order={order}
                             orderBy={orderBy}
-                            onSelectAllClick={handleSelectAllClick}
+                            // onSelectAllClick={handleSelectAllClick}
                             onRequestSort={handleRequestSort}
                             rowCount={rows.length}
                             type={props.type === 'delete' ? 'delete' : props.type === 'view' ? 'view' : 'add'}
@@ -243,24 +244,38 @@ export default function TableUsersWithAccessEdit(props) {
                             {stableSort(rows, getComparator(order, orderBy))
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((row, index) => {
-                                    const isItemSelected = isSelected(props.type === 'delete' ? row.id : row.id);
+                                    // const isItemSelected = isSelected(props.type === 'delete' ? row.id : row.id);
                                     const labelId = `enhanced-table-checkbox-${index}`;
 
                                     return (
                                         <TableRow
                                             hover
-                                            onClick={(event) => handleClick(event, row.id)}
+                                            // onClick={(event) => handleClick(event, row.id)}
+                                            onClick={() => props.setSelected(row.id)}
                                             role="checkbox"
-                                            aria-checked={isItemSelected}
+                                            // aria-checked={isItemSelected}
+                                            aria-checked={props.selected === row.id}
                                             tabIndex={-1}
                                             key={row.id}
-                                            selected={isItemSelected}
+                                            // selected={isItemSelected}
+                                            selected={props.selected === row.id}
                                         >
                                             <TableCell>
                                                 {row.userName}
                                             </TableCell>
                                             <TableCell >{row.email}</TableCell>
                                             <TableCell align='right'>
+                                                <Radio
+                                                    onClick={() => props.setSelected(row.id)}
+                                                    color="primary"
+                                                    checked={props.selected === row.id}
+                                                    // checked={isItemSelected}
+                                                    inputProps={{
+                                                        'aria-labelledby': labelId,
+                                                    }}
+                                                />
+                                            </TableCell>
+                                            {/* <TableCell align='right'>
                                                 {row.id === '' ? '' : props.type === "delete" ?
                                                     <IconButton aria-label="delete" color="primary">
                                                         <DeleteOutlineIcon color={isSelected(row.id) ? 'error' : "disabled"} />
@@ -276,7 +291,7 @@ export default function TableUsersWithAccessEdit(props) {
                                                             'aria-labelledby': labelId,
                                                         }}
                                                     />}
-                                            </TableCell>
+                                            </TableCell> */}
                                         </TableRow>
                                     );
                                 })}

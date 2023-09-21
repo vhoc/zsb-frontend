@@ -180,7 +180,7 @@ export default function EditAdmin(props) {
                             onChange={formik.handleChange}
                             error={formik.touched.name && Boolean(formik.errors.name)}
                             helperText={formik.touched.name && formik.errors.name}
-                            disabled
+                            // disabled
                         />
                         <TextField
                             autoFocus
@@ -194,7 +194,7 @@ export default function EditAdmin(props) {
                             onChange={formik.handleChange}
                             error={formik.touched.email && Boolean(formik.errors.email)}
                             helperText={formik.touched.email && formik.errors.email}
-                            disabled
+                            // disabled
                         />
                         <FormControl
                             margin="dense"

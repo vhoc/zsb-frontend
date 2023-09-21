@@ -38,6 +38,7 @@ export default function MenuUserWithAccess(props) {
                 controlData('error', 'Error')
             }
             setAlertDelete(false)
+            props.setSelected([])
         })
     }
 

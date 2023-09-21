@@ -200,12 +200,12 @@ export default function TableUsersWithAccess(props) {
                     hiddenLabel
                     id="filled-hidden-label-normal"
                     variant="filled"
-                    placeholder="Buscar usuario o sesión"
+                    placeholder="Buscar usuario"
                 />
                 {
                     props.selected.length >= 1 ?
                         <Button variant="contained" color={'error'}
-                            startIcon={<DeleteIcon />} onClick={() => alert('PENDING DELETION FUNCTIONALITY. WAITING FOR BACKEND.')}
+                            startIcon={<DeleteIcon />} onClick={props.onDeleteUserList}
                             >
                             ELIMINAR USUARIOS
                         </Button>
@@ -274,7 +274,7 @@ export default function TableUsersWithAccess(props) {
                                             </TableCell>
                                             <TableCell >
                                                 {row.id === '' ? "" :
-                                                    <MenuUserWithAccess email={row.email} id={row.id} name={row.userName} status={row.status} />
+                                                    <MenuUserWithAccess email={row.email} id={row.id} name={row.userName} status={row.status} setSelected={props.setSelected} />
                                                 }
                                             </TableCell>
                                         </TableRow>

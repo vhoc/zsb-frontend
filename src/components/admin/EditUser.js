@@ -5,16 +5,24 @@ import { makeStyles } from '@mui/styles';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { IconButton } from '@mui/material';
+import { DialogContentText, IconButton, TextField } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import Typography from '@mui/material/Typography'
 import EditIcon from '@mui/icons-material/Edit';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import TableUsersWithAccessEdit from './TableUsersWithAccessEdit';
-import { getUsersbyRol, getUsersOutRol, getUsers, postUsersGroup, postRole, putRole, deleteUsersGroup } from '../../services/admin';
+import { getUsersbyRol, getUsersOutRol, getUsers, postZoomUser, getUsersNotRegister } from '../../services/admin';
 import { useGlobalState } from '../../utility/useGlobalState';
 import Alert from '../Alert'
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+
+const validationSchema = yup.object({
+  password: yup
+      .string('password')
+      .required('Se requiere ingresar una contraseña'),
+});
 
 function TabPanel(props) {
 
@@ -44,12 +52,12 @@ TabPanel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-}
+// function a11yProps(index) {
+//   return {
+//     id: `simple-tab-${index}`,
+//     'aria-controls': `simple-tabpanel-${index}`,
+//   };
+// }
 
 
 const useStyles = makeStyles({
@@ -66,153 +74,85 @@ const useStyles = makeStyles({
 
 export default function EditUsersWithAccess(props) {
 
-  const { controlData } = useGlobalState()
-
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const [openPassword, setOpenPassword] = useState(false)
   const [value, setValue] = useState(0);
   const [name, setName] = useState(props.name)
   const [dataOut, setDataOut] = useState([])
-  const [toAdd, setToAdd] = useState([])
+  const [toAdd, setToAdd] = useState(0)
   const [dataIn, setDataIn] = useState([])
-  const [toRemove, setToRemove] = useState([])
+  // const [toRemove, setToRemove] = useState([])
   const [alertOpen, setOpenAlert] = useState(false)
   const [alertText, setAlertText] = useState('')
 
+  
+    const { controlData } = useGlobalState()
+
   useEffect(() => {
     if (open) {
-      if (props.name !== undefined) {
-        setName(props.name)
-        getUsersbyRol(props.id).then((res) => {
-          if (res.success !== false) {
-            setDataIn(res.data)
-          }
-        })
-        getUsersOutRol(props.id).then((res) => {
+        getUsersNotRegister().then((res) => {
           if (res.success !== false) {
             setDataOut(res.data)
           }
         })
       }
-      else {
-        getUsers().then((res) => {
-          if (res.success !== false) {
-            setDataOut(res.data)
-          }
-        })
-      }
-    }
   }, [open, props.name])
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  const formik = useFormik({
+    initialValues: {
+        password:''
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values, { resetForm }) => {
+            postZoomUser(toAdd, values.password).then((res) => {
+                if (res.success !== false) {
+                    controlData('success', 'Se ha añadido el usuario exitosamente')
+                    setOpen(false)
+                    setOpenPassword(false)
+                    resetForm()
+                }
+                else {
+                    if (res.error.response.status === 400 || res.error?.response?.status === 400) {
+                      controlData('error', res.error.response.data.errors[0])
+                        // setAlert({ severity: 'error', text: res.error.response.data.errors[0], open: true })
+                    }
+                    else {
+                      controlData('error', 'Ocurrió un error')
+                        // setAlert({ severity: 'error', text: 'Ocurrió un error', open: true })
+                    }
+                }
+            })
+    },
+});
+
+const handleClose = () => {
+  formik.resetForm()
+  setOpenPassword(false)
+  setOpen(false);
+};
 
   const handleClickOpen = () => {
     setOpen(true);
-    setToAdd([])
-    setToRemove([])
+    setToAdd(0)
+    // setToRemove([])
   };
-
-  const handleClose = () => {
-    setOpen(false);
-    setName('')
-  };
-
-  const save = () => {
-    if (props.variant === 'create') {
-      postRole({ name }).then((res) => {
-        if (res.success !== false) {
-          setName('')
-          setOpen(false)
-          if (toAdd.length !== 0) {
-            //postUserWithAccess
-            postUsersGroup(res.data.id, toAdd).then(res => {
-              if (res.success !== false) {
-                controlData('success', 'Se ha creado un nuevo rol exitosamente')
-              }
-              else {
-                controlData('error', 'Ocurrió un error al guardar los usuarios')
-              }
-            })
-          }
-          else {
-            controlData('success', 'Se ha creado un nuevo rol exitosamente')
-          }
-        }
-        else if (res.error.response.status === 400) {
-          setAlertText(res.error.response.data)
-          setOpenAlert(true)
-        }
-        else {
-          controlData('error', 'Ocurrió un error')
-          setName('')
-          setOpen(false)
-        }
-      })
-    }
-    else {
-      putRole(props.id, name).then((res) => {
-        if (res.success !== false) {
-          setName('')
-          setOpen(false)
-          controlData('success', 'Se ha modificado el rol exitosamente')
-          if (toAdd.length === 0 && toRemove.length === 0) {
-            return controlData('success', 'Se ha modificado el rol exitosamente')
-          }
-          if (toAdd.length !== 0) {
-            postUsersGroup(props.id, toAdd).then(res => {
-              if (res.success !== false) {
-                return controlData('success', 'Se ha modificado el rol exitosamente')
-              }
-              else {
-                return controlData('error', 'Ocurrió un error al guardar los usuarios')
-              }
-            })
-          }
-          if (toRemove.length !== 0) {
-            deleteUsersGroup(props.id, toRemove).then(res => {
-              if (res.success !== false) {
-                return controlData('success', 'Se ha modificado el rol exitosamente')
-              }
-              else {
-                return controlData('error', 'Ocurrió un error al guardar los usuarios')
-              }
-            })
-          }
-        }
-        else if (res.error.response.status === 400) {
-          setAlertText(res.error.response.data)
-          setOpenAlert(true)
-        }
-        else {
-          setName('')
-          setOpen(false)
-          controlData('error', 'Ocurrió un error')
-        }
-      })
-    }
-  }
 
   return (
     <div>
       <Alert open={alertOpen} onConfirm={() => setOpenAlert(false)} btnConfirm="OK" text={alertText} />
-      {props.variant === 'create' ?
         <Button variant="contained" color="primary"
           startIcon={<AddIcon />} onClick={handleClickOpen}
         >
           {props.btn}
-        </Button> :
-        <IconButton aria-label="edit" color="primary" onClick={handleClickOpen}>
-          <EditIcon color="disabled" />
-        </IconButton>}
+        </Button> 
       <Dialog
         fullWidth={true}
         maxWidth='md'
         classes={{
           paper: classes.dialog
         }} open={open} onClose={handleClose}>
-        <DialogTitle>Selecciona usuarios</DialogTitle>
+        <DialogTitle>Selecciona usuario</DialogTitle>
         <DialogContent>         
           <Box sx={{ width: '100%' }}>
               <Typography align="justify" variant="body2" gutterBottom>
@@ -223,9 +163,42 @@ export default function EditUsersWithAccess(props) {
         </DialogContent>
         <DialogActions className="m-3 pr-4">
           <Button variant="contained" color="inherit" onClick={handleClose}>Cancelar</Button>
-          <Button variant="contained" onClick={save}>Guardar</Button>
+          <Button variant="contained" onClick={()=>setOpenPassword(true)}>Guardar</Button>
         </DialogActions>
       </Dialog>
+      <Dialog open={openPassword} onClose={handleClose} aria-labelledby="form-dialog-title">
+                <form onSubmit={formik.handleSubmit}>
+                    <DialogTitle id="form-dialog-title">
+                        Añadir Usuario de Zoom
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                                Introduce una contraseña para añadir a este usuario.           
+                        </DialogContentText>
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="password"
+                            label="Contraseña"
+                            variant="filled"
+                            fullWidth
+                            value={formik.values.password}
+                            onChange={formik.handleChange}
+                            error={formik.touched.password && Boolean(formik.errors.password)}
+                            helperText={formik.touched.password && formik.errors.password}
+                          
+                        />
+                    </DialogContent>
+                    <DialogActions className="p-3 pr-5">
+                        <Button onClick={handleClose} color="error">
+                            Cancelar
+                        </Button>
+                        <Button type="submit" color="primary">
+                            Guardar
+                        </Button>
+                    </DialogActions>
+                </form>
+            </Dialog>
     </div>
   );
 }
