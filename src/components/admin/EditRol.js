@@ -100,7 +100,7 @@ export default function EditRol(props) {
       else {
         getUsers().then((res) => {
           if (res.success !== false) {
-            setDataOut(res.data)
+            setDataOut(res.data.users)
           }
         })
       }
