@@ -125,6 +125,7 @@ export default function EditRol(props) {
   const save = () => {
     if (props.variant === 'create') {
       postRole({ name }).then((res) => {
+        console.log(res)
         if (res.success !== false) {
           setName('')
           setOpen(false)
@@ -142,8 +143,9 @@ export default function EditRol(props) {
             controlData('success', 'Se ha creado un nuevo rol exitosamente')
           }
         }
-        else if (res.error.response.status === 400) {
-          setAlertText(res.error.response.data)
+        else if (res.error) {
+          // setAlertText(String(res.error))
+          setAlertText('Verifica que hayas escrito correctamente el nombre del rol.')
           setOpenAlert(true)
         }
         else {
