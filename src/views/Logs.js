@@ -23,6 +23,7 @@ function createData(id, idSession, user, name, date, duration, init, finish, sta
     let dateTime = ''
     let initTime = ''
     let finishTime = ''
+    let inProces = false
     if (date === undefined || date === null) {
         date = ''
     }
@@ -56,7 +57,8 @@ function createData(id, idSession, user, name, date, duration, init, finish, sta
         initTime,
         finish,
         finishTime,
-        status
+        status,
+        inProces
     };
 }
 
@@ -85,7 +87,7 @@ export default function Logs() {
 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [rows, setRows] = useState([createData("","", <p>No hay resultados que mostrar</p>)])
+    const [rows, setRows] = useState([createData("", "", <p>No hay resultados que mostrar</p>)])
     const [totalRecords, setTotalRecords] = useState(0)
     const [search, setSearch] = useState('')
     const [loading, setLoading] = useState(false)
@@ -101,7 +103,7 @@ export default function Logs() {
                     return dataTable.push(createData(e.id, e.idSession, e.userName, e.sessionName, e.sessionDate, e.duration, e.backupStart, e.backupFinish, e.sessionStatus))
                 })
                 if (dataTable.length === 0) {
-                    setRows([createData("","", <p>No hay resultados que mostrar</p>)])
+                    setRows([createData("", "", <p>No hay resultados que mostrar</p>)])
                 }
                 else {
                     setRows(dataTable)
@@ -122,7 +124,7 @@ export default function Logs() {
                     return dataTable.push(createData(e.id, e.idSession, e.userName, e.sessionName, e.sessionDate, e.duration, e.backupStart, e.backupFinish, e.sessionStatus))
                 })
                 if (dataTable.length === 0) {
-                    setRows([createData("","", <p>No hay resultados que mostrar</p>)])
+                    setRows([createData("", "", <p>No hay resultados que mostrar</p>)])
                 }
                 else {
                     setRows(dataTable)
@@ -143,7 +145,7 @@ export default function Logs() {
                     return dataTable.push(createData(e.id, e.idSession, e.userName, e.sessionName, e.sessionDate, e.duration, e.backupStart, e.backupFinish, e.sessionStatus))
                 })
                 if (dataTable.length === 0) {
-                    setRows([createData("","", <p>No hay resultados que mostrar</p>)])
+                    setRows([createData("", "", <p>No hay resultados que mostrar</p>)])
                 }
                 else {
                     setRows(dataTable)
@@ -167,7 +169,7 @@ export default function Logs() {
                         return dataTable.push(createData(e.id, e.idSession, e.userName, e.sessionName, e.sessionDate, e.duration, e.backupStart, e.backupFinish, e.sessionStatus))
                     })
                     if (dataTable.length === 0) {
-                        setRows([createData("","", <p>No hay resultados que mostrar</p>)])
+                        setRows([createData("", "", <p>No hay resultados que mostrar</p>)])
                         setLoading(false)
                     }
                     else {
@@ -179,7 +181,7 @@ export default function Logs() {
             setLoading(false)
         })
         setTimeout(() => {
-            if(search.length===0){
+            if (search.length === 0) {
                 setReload(reload + 1)
             }
         }, 60000)
@@ -275,7 +277,7 @@ export default function Logs() {
                                                     </TableCell>
                                                     <TableCell >
                                                         <Typography variant='body2'>
-                                                            {row.duration !== undefined?row.duration+' Min': ''}
+                                                            {row.duration !== undefined ? row.duration + ' Min' : ''}
                                                         </Typography>
                                                     </TableCell>
                                                     <TableCell >
@@ -286,14 +288,20 @@ export default function Logs() {
                                                             {row.initTime}
                                                         </Typography>
                                                     </TableCell>
-                                                    <TableCell >
-                                                        <Typography variant='body2'>
-                                                            {row.finish}
-                                                        </Typography>
-                                                        <Typography className="sub-text" variant="overline" display="block" gutterBottom>
-                                                            {row.finishTime}
-                                                        </Typography>
-                                                    </TableCell>
+                                                    {row.finish === '01/01/0001'?
+                                                        (<TableCell >
+                                                            <Typography variant='body2'>
+                                                                {row.finish}
+                                                            </Typography>
+                                                            <Typography className="sub-text" variant="overline" display="block" gutterBottom>
+                                                                {row.finishTime}
+                                                            </Typography>
+                                                        </TableCell>):
+                                                        (<TableCell >
+                                                            <Typography variant='body2'>
+                                                                En proceso
+                                                            </Typography>
+                                                        </TableCell>)}
                                                     <TableCell>
                                                         {row.status === undefined ? '' : <Chip size="small" color={row.status === 0 ? "error" : row.status === 2 ? "success" : "primary"} label={row.status === 0 ? "Error" : row.status === 2 ? "Descargando" : "Exitoso"} />}
                                                     </TableCell>
