@@ -1,4 +1,0 @@
-REACT_APP_URL = https://.wtsbu.dev/test/api/
-REACT_APP_LOCAL_HOST_URL = https://localhost:44393/api/
-REACT_APP_NAME = Change me!
-REACT_APP_CLOUDFRONT_DOMAIN = d10r3gcwnvad22.cloudfront.net

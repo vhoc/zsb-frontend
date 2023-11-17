@@ -21,7 +21,31 @@ function AdminPanel(props) {
         if (props.title === 'Roles') {
             getRoles().then((res) => {
                 if (res.success !== false) {
+                    //console.log(res.data)
                     setRoles(res.data)
+                    // DUMMY DATA
+                    // setRoles([
+                    //     {
+                    //         groupId: 1,
+                    //         groupName: 'Super Admin',
+                    //         totalUsers: 77,
+                    //     },
+                    //     {
+                    //         groupId: 2,
+                    //         groupName: 'Prueba',
+                    //         totalUsers: 1,
+                    //     },
+                    //     {
+                    //         groupId: 3,
+                    //         groupName: 'Depto de Ventas',
+                    //         totalUsers: 3,
+                    //     },
+                    //     {
+                    //         groupId: 5,
+                    //         groupName: 'Ingenierias',
+                    //         totalUsers: 1,
+                    //     },
+                    // ])
                 }
             })
         }

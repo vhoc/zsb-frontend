@@ -1,6 +1,7 @@
 import Login from "./views/Login"
 import Search from "./views/Search";
 import Admin from "./views/Admin";
+import Users from "./views/Users";
 import Settings from "./views/Settings"
 import Logs from "./views/Logs"
 import { Route, Switch } from "react-router-dom"
@@ -21,6 +22,7 @@ function App() {
             <Route path="/logs" component={Logs} />
             <Route path="/settings" component={Settings} />
             <Route path="/admin-panel" component={Admin} />
+            <Route path="/users" component={Users} />
             <Route path="/search" component={Search} />
             <Route path="/session/:id/:otp" component={Session} />
             <Route path="/session/:id" component={Session} />
