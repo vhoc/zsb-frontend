@@ -288,7 +288,7 @@ export default function Logs() {
                                                             {row.initTime}
                                                         </Typography>
                                                     </TableCell>
-                                                    {row.finish === '01/01/0001'?
+                                                    {row.finish !== '01/01/0001'?
                                                         (<TableCell >
                                                             <Typography variant='body2'>
                                                                 {row.finish}
